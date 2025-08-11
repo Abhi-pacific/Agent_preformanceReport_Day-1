@@ -142,7 +142,10 @@ class report:
         
         """
         self.agent_Data['Productive (Avail+Follow Up)'] = pd.to_timedelta(self.agent_Data['FOLLOW_UP']) + pd.to_timedelta(self.agent_Data['AVAILABLE'])
+        self.agent_Data['Productive (Avail+Follow Up)'] = self.agent_Data['Productive (Avail+Follow Up)'].apply(lambda x: str(x).split()[-1])
         self.agent_Data['Production (Avail+FollowUP+Tea+Lunch)'] = self.agent_Data['Productive (Avail+Follow Up)'] + pd.to_timedelta(self.agent_Data['LUNCH_BREAK']) + pd.to_timedelta(self.agent_Data['TEA_BREAK'])
+        # Format to HH:MM:SS for display
+        self.agent_Data['Production (Avail+FollowUP+Tea+Lunch)'] = self.agent_Data['Production (Avail+FollowUP+Tea+Lunch)'].apply(lambda x: str(x).split()[-1]) 
 
         st.dataframe(self.agent_Data)
 
