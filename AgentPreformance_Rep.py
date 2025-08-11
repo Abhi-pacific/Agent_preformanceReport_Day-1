@@ -157,22 +157,22 @@ col1, col2, col3 = st.columns([0.1,4,1])
 with col3:
     st.image('https://www.netimpactlimited.com/wp-content/uploads/2024/04/NetImpact-Logo-Final-Web-2.png')
 with col2:
-    st.subheader(f'Agent Performance Report😊')
+    st.subheader(f'Agent Performance Report📈')
 
 # Agent file upload
-raw_agentFile = st.file_uploader('Please upload the Agent file here 😎')
+raw_agentFile = st.file_uploader('Please upload the Agent file here')
 if raw_agentFile:
-    st.success('file uploaded 😁')
+    st.success('File received successfully')
 
 # Roaster File Upload
-raw_roaster_File_data = st.file_uploader(f'Please upload the Roaster file 😼')
+raw_roaster_File_data = st.file_uploader(f'Please upload the Roaster file')
 if raw_roaster_File_data:
-    st.success('File uploaded success 😍')        
+    st.success('File received successfully')        
 
 # Live_chat file upload 
-raw_live_chat = st.file_uploader(f'Please upload the live chat file 😎')
+raw_live_chat = st.file_uploader(f'Please upload the live chat file')
 if raw_live_chat:
-    st.success('Files received initiating the Automation HAIL NETIMPACT 🫡')
+    st.success('Files received successfully, initiating the Automation. Please wait..')
 
 if raw_agentFile and raw_live_chat and raw_roaster_File_data is not None:
     rp = report()
