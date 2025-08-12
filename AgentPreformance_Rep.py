@@ -44,7 +44,7 @@ class report:
         self.agent_Data = agent_Data
         self.roaster_Data = roaster_Data
         self.live_chat = live_chat
-
+        
         # Removing the absent employees from the Roaster
         self.roaster_Data = self.roaster_Data[~(self.roaster_Data['present_attendance'] == 'WO')]
         # Removing the extra spaces from the column names
@@ -121,6 +121,11 @@ class report:
     def merging_pivot_and_agent(self,agent_Data,live_chat):
         self.agent_Data = agent_Data
         self.live_chat = live_chat
+
+        # coverting the column Emp Name and Case First Assigned to Advisor to lower case.
+        self.live_chat_pivot['Case First Assigned to Advisor'] = self.live_chat_pivot['Case First Assigned to Advisor'].str.lower()
+        self.agent_Data['Emp Name'] = self.agent_Data['Emp Name'].str.lower()
+
         # Joining the agent_Data and live_chat_pivot
         self.agent_Data = self.agent_Data.merge(
             self.live_chat_pivot[['AHT_mean','FRT_count','FRT_mean','Case First Assigned to Advisor']],
@@ -130,8 +135,8 @@ class report:
         )
 
         # Dropping the Null values and resetting the index
-        for i in ['AHT_mean','FRT_count','FRT_mean','Case First Assigned to Advisor']:
-            self.agent_Data[i].fillna('Not Found',inplace=True)
+       
+        self.agent_Data.dropna(inplace=True)
         self.agent_Data = self.agent_Data[~(self.agent_Data['Case First Assigned to Advisor'] == 'Not Found')]
         self.agent_Data.reset_index(drop=True,inplace=True)
 
