@@ -56,6 +56,9 @@ class report:
         # Extracting the Employee ID
         self.agent_Data["Emp_ID"] = self.agent_Data["Agent Email"].str.split('@').str[0]
 
+        # fixing the Date Column rempving the Time form the Date
+        self.agent_Data['Date'] = self.agent_Data['Date'].astype(str).str.split(' ').str[0]
+
 
 
         """  Joining the 2 data frames agent and roaster """
