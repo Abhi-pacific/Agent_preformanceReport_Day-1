@@ -107,10 +107,10 @@ class report:
             )
 
         # Format mean of FRT as HH:MM:SS
-        self.live_chat_pivot[('FRT', 'mean')] = self.live_chat_pivot[('FRT', 'mean')].astype(str).str.extract(r'(\d{2}:\d{2}:\d{2})')
+        self.live_chat_pivot[('FRT', 'mean')] = (self.live_chat_pivot[('FRT', 'mean')].dt.round('1s').astype(str).str.extract(r'(\d{2}:\d{2}:\d{2})'))
 
         # Format mean of AHT as HH:MM:SS
-        self.live_chat_pivot[('AHT', 'mean')] = self.live_chat_pivot[('AHT', 'mean')].astype(str).str.extract(r'(\d{2}:\d{2}:\d{2})')
+        self.live_chat_pivot[('AHT', 'mean')] = (self.live_chat_pivot[('AHT', 'mean')].dt.round('1s').astype(str).str.extract(r'(\d{2}:\d{2}:\d{2})'))
 
         # Flatten the  Pivot Table
         self.live_chat_pivot.columns = [f"{i}_{j}" if j else i for i, j in self.live_chat_pivot.columns]
