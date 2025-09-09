@@ -32,9 +32,12 @@ class report:
             else:
                 st.error("Agent file not uploaded yet. Please upload the file before loading data.")
                 return 
-            self.agent_Data = self.agent_Data_df.parse('Agent')
-            self.roaster_Data = self.roaster_data_df.parse('Roaster')
-            self.live_chat = self.live_chat_df.parse('Main File')
+            self.agent_sheet = self.agent_Data_df.sheet_names
+            self.roaster_sheet = self.roaster_data_df.sheet_names
+            self.live_chat_sheet = self.live_chat_df.sheet_names
+            self.agent_Data = self.agent_Data_df.parse(self.agent_sheet[0])
+            self.roaster_Data = self.roaster_data_df.parse(self.roaster_sheet[0])
+            self.live_chat = self.live_chat_df.parse(self.live_chat_sheet[0])
             
             self.cleaning_and_manipulation(self.agent_Data, self.roaster_Data, self.live_chat)
        
@@ -45,8 +48,11 @@ class report:
         self.roaster_Data = roaster_Data
         self.live_chat = live_chat
         
+        # converting the PR column to lower case
+        self.roaster_Data['PR'] = self.roaster_Data['PR'].str.lower()
+
         # Removing the absent employees from the Roaster
-        self.roaster_Data = self.roaster_Data[~(self.roaster_Data['present_attendance'] == 'WO')]
+        self.roaster_Data = self.roaster_Data[~(self.roaster_Data['PR'] == 'wo')]
         # Removing the extra spaces from the column names
         self.agent_Data.columns = self.agent_Data.columns.str.strip()
 
@@ -65,18 +71,18 @@ class report:
 
 
         self.agent_Data = self.agent_Data.merge(
-        self.roaster_Data[['OLms ID','Emp Name','TL Name','Shift']],
+        self.roaster_Data[['OLMS ID','Emp Name','TL Name','Shift']],
         left_on = 'Emp_ID',
-        right_on = 'OLms ID',
+        right_on = 'OLMS ID',
         how = 'left'
         )
 
         # Replacing the NaN values with Not Found 
-        for i in ['OLms ID','Emp Name','TL Name','Shift']:
+        for i in ['OLMS ID','Emp Name','TL Name','Shift']:
             self.agent_Data[i].fillna('Not Found',inplace=True)
 
         # Removing the Not Found """we can also use dropna here🤣 """
-        self.agent_Data = self.agent_Data[~(self.agent_Data['OLms ID'] == 'Not Found')]
+        self.agent_Data = self.agent_Data[~(self.agent_Data['OLMS ID'] == 'Not Found')]
         self.agent_Data.reset_index(drop=True,inplace=True)
 
         # Removing the NULL values from live_chat 
